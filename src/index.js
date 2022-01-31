@@ -1,39 +1,36 @@
 const ul = document.querySelector('ul');
-
 const form = document.querySelector('form');
 const input = document.querySelector('form > input');
+
 
 form.addEventListener('submit', (event) => {
     event.preventDefault();
     const value = input.value;
-    input.value = "";
+    input.value = '';
     addTodo(value);
-    displayTodo();
 })
 
 const todos = [{
         text: 'je suis une todo',
         done: false,
-        editMode: false
+        editMode: true
     },
     {
-        text: 'faire du javascript',
+        text: 'faire javascript',
         done: true,
-        editMode: true
+        editMode: false
     }
 ];
-
 
 const displayTodo = () => {
     const todosNode = todos.map((todo, index) => {
         if (todo.editMode) {
-            return createTodoEditElelment(todo, index);
-
+            return createTodoEditElement(todo, index);
         } else {
             return createTodoElement(todo, index);
         }
 
-    });
+    })
     ul.innerHTML = '';
     ul.append(...todosNode);
 }
@@ -45,16 +42,17 @@ const createTodoElement = (todo, index) => {
     const buttonEdit = document.createElement('button');
     buttonEdit.innerHTML = 'Edit';
     buttonDelete.addEventListener('click', (event) => {
-        event.stopPropagation()
+        event.stopPropagation();
         deleteTodo(index);
     })
     buttonEdit.addEventListener('click', (event) => {
         event.stopPropagation();
         toggleEditMode(index);
     })
-    li.innerHTML = `<span class="todo ${todo.done ? "done" : ""}"></span>
-                    <p>${todo.text}</p>
-                    `;
+    li.innerHTML = `
+    <span class="todo ${todo.done ? 'done' : '' }"></span>
+    <p>${todo.text}</p>
+    `;
     li.addEventListener('click', (event) => {
         toggleTodo(index);
     })
@@ -63,7 +61,7 @@ const createTodoElement = (todo, index) => {
 }
 
 
-const createTodoEditElelment = (todo, index) => {
+const createTodoEditElement = (todo, index) => {
     const li = document.createElement('li');
     const input = document.createElement('input');
     input.type = 'text';
@@ -79,7 +77,7 @@ const createTodoEditElelment = (todo, index) => {
     buttonSave.addEventListener('click', (event) => {
         editTodo(index, input);
     })
-    li.append(input, buttonCancel, buttonSave);
+    li.append(input, buttonSave, buttonCancel);
     return li;
 }
 
@@ -96,9 +94,9 @@ const deleteTodo = (index) => {
     displayTodo();
 }
 
-const toggleTodo = index => {
+const toggleTodo = (index) => {
     todos[index].done = !todos[index].done;
-    displayTodo();
+    displayTodo()
 }
 
 const toggleEditMode = (index) => {
@@ -112,5 +110,6 @@ const editTodo = (index, input) => {
     todos[index].editMode = false;
     displayTodo();
 }
+
 
 displayTodo();
